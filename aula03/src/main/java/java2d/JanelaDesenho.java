@@ -1,8 +1,10 @@
 package java2d;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import javax.swing.JFrame;
 
@@ -28,7 +30,9 @@ public class JanelaDesenho extends JFrame {
 		g.fillRect(30, 30, 50, 50);
 
 		// Quadrado vazado
-		g.setColor(Color.RED);
+		g.setColor(new Color(100,20,75));
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setStroke(new BasicStroke(5));
 		g.drawRect(40, 40, 50, 50);
 
 		///////////

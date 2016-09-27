@@ -8,23 +8,22 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-public class ExemploComboBox extends JFrame {
+public class ExemploComboBox1 extends JFrame {
 
-	public ExemploComboBox() {
+	public ExemploComboBox1() {
 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(200,200);
-		
+		setSize(400, 400);
+
 		// Vetor de opções
 		String[] animais = { "Pássaro", "Gato", "Cachorro", "Coelho",
 				"Porco" };
 
-		
 		// Cria a combo
 		JComboBox<String> comboAnimais = new JComboBox<String>(
 				animais);
 		comboAnimais.setSelectedIndex(4);
-		
+
 		// Ação ao escolher
 		comboAnimais.addActionListener(new ActionListener() {
 
@@ -37,15 +36,22 @@ public class ExemploComboBox extends JFrame {
 						"Selecionou " + combo.getSelectedItem());
 			}
 		});
-		
+
+		// Combo com opções de objeto
+		Animal[] animaisObjeto = { new Animal("Gato", "4"), new Animal("Cachorro", "4"),
+				new Animal("Pássaro", "2") };
+		JComboBox<Animal> comboAnimaisObjeto = new JComboBox<>(
+				animaisObjeto);
+
 		// Adiciona
 		getContentPane().setLayout(new FlowLayout());
 		getContentPane().add(comboAnimais);
+		getContentPane().add(comboAnimaisObjeto);
 
 	}
 
 	public static void main(String[] args) {
-		new ExemploComboBox().setVisible(true);
+		new ExemploComboBox1().setVisible(true);
 	}
 
 }

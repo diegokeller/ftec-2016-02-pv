@@ -1,4 +1,4 @@
-package aula08.rotacao_desenho_2d;
+package aula09.rotacao_desenho_2d;
 
 import java.awt.Color;
 import java.awt.Graphics;

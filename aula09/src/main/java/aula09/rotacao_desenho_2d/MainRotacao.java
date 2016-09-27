@@ -47,7 +47,7 @@ public class MainRotacao extends JFrame {
 		g2d.setColor(Color.BLUE);
 		g2d.draw(rect1);
 
-		Shape rect2 = rotacionarForma(rect1, graus, 200, 200);
+		Shape rect2 = rotacionarForma(rect1, graus, 225, 225);
 		g2d.setColor(Color.RED);
 		g2d.fill(rect2);
 		

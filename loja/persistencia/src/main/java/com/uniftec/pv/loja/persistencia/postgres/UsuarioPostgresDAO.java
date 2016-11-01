@@ -42,7 +42,8 @@ public class UsuarioPostgresDAO implements UsuarioDAO {
 			ps.execute();
 
 		} catch (SQLException e) {
-			throw new PersistenceException("Erro ao inserir o usuário.", e);
+			throw new PersistenceException(
+					"Erro ao inserir o usuário.", e);
 		}
 
 	}
@@ -61,11 +62,12 @@ public class UsuarioPostgresDAO implements UsuarioDAO {
 	}
 
 	@Override
-	public List<Usuario> buscarTodos() throws PersistenceException {
+	public List<Usuario> buscarTodos()
+			throws PersistenceException {
 
 		// Lista de usuarios
 		List<Usuario> retorno = new LinkedList<Usuario>();
-		
+
 		// Pega a conexão
 		Connection conexao = ConnectionFactory
 				.getPostgresConnection();
@@ -75,31 +77,73 @@ public class UsuarioPostgresDAO implements UsuarioDAO {
 
 			// Try with resources - fecha sozinho
 			try (ResultSet resultado = ps.executeQuery()) {
-				
+
 				// Enquanto houver resultados
 				while (resultado.next()) {
-					
-					// Pega os campos
-					int id = resultado.getInt("id");
-					String nome = resultado.getString("nome");
-					String email = resultado.getString("email");
-					String login = resultado.getString("login");
-					String senha = resultado.getString("senha");
-					Boolean ativo = resultado.getBoolean("ativo");
-					String perfil = resultado.getString("perfil");
-	
-					// Cria o usuário
-					Usuario usuario = new Usuario(id, nome, login, email, senha, ativo, perfil);
-					
+
+					Usuario usuario = montarUsuario(resultado);
+
 					// Adiciona na lista de retorno
 					retorno.add(usuario);
 				}
 			}
 		} catch (SQLException e) {
-			throw new PersistenceException("Erro ao buscar os usuários.", e);
+			throw new PersistenceException(
+					"Erro ao buscar os usuários.", e);
 		}
-		
+
 		return retorno;
+	}
+
+	private Usuario montarUsuario(ResultSet resultado)
+			throws SQLException {
+		// Pega os campos
+		int id = resultado.getInt("id");
+		String nome = resultado.getString("nome");
+		String email = resultado.getString("email");
+		String login = resultado.getString("login");
+		String senha = resultado.getString("senha");
+		Boolean ativo = resultado.getBoolean("ativo");
+		String perfil = resultado.getString("perfil");
+
+		// Cria o usuário
+		Usuario usuario = new Usuario(id, nome, login, email,
+				senha, ativo, perfil);
+		return usuario;
+	}
+
+	@Override
+	public Usuario buscarPorLogin(String login)
+			throws PersistenceException {
+
+		// Usuário de retorno
+		Usuario retorno = null;
+
+		// Pega a conexão
+		Connection conexao = ConnectionFactory
+				.getPostgresConnection();
+
+		String sql = "select * from usuario where login = ?";
+		try (PreparedStatement ps = conexao.prepareStatement(sql)) {
+
+			// Passar o login por parâmetro
+			ps.setString(1, login);
+			
+			// Try with resources - fecha sozinho
+			try (ResultSet resultado = ps.executeQuery()) {
+
+				// Se houver resultados
+				if (resultado.next()) {
+					retorno = montarUsuario(resultado);
+				}
+			}
+		} catch (SQLException e) {
+			throw new PersistenceException(
+					"Erro ao buscar o usuário.", e);
+		}
+
+		return retorno;
+
 	}
 
 }

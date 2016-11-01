@@ -15,5 +15,8 @@ public interface UsuarioDAO {
 	public void excluir(Integer id) throws PersistenceException;
 	public Usuario buscar(Integer id) throws PersistenceException;
 	public List<Usuario> buscarTodos() throws PersistenceException;
+	
+	public Usuario buscarPorLogin(String login)
+			throws PersistenceException;
 
 }

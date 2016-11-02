@@ -14,6 +14,12 @@ import com.uniftec.pv.loja.persistencia.UsuarioDAO;
 
 public class UsuarioPostgresDAO implements UsuarioDAO {
 
+	private Connection conexao;
+	
+	public UsuarioPostgresDAO(Connection conexao) {
+		this.conexao = conexao;
+	}
+
 	@Override
 	public void inserir(Usuario usuario)
 			throws PersistenceException {
@@ -22,10 +28,6 @@ public class UsuarioPostgresDAO implements UsuarioDAO {
 		String sql = "insert into usuario("
 				+ "	nome, login, email, senha, ativo, perfil) "
 				+ " values (?, ?, ?, ?, ?, ?)";
-
-		// Pega a conexão
-		Connection conexao = ConnectionFactory
-				.getPostgresConnection();
 
 		// Try with resources - PS será automaticamente fechado
 		try (PreparedStatement ps = conexao.prepareStatement(sql)) {
@@ -67,10 +69,6 @@ public class UsuarioPostgresDAO implements UsuarioDAO {
 
 		// Lista de usuarios
 		List<Usuario> retorno = new LinkedList<Usuario>();
-
-		// Pega a conexão
-		Connection conexao = ConnectionFactory
-				.getPostgresConnection();
 
 		String sql = "select * from usuario";
 		try (PreparedStatement ps = conexao.prepareStatement(sql)) {
@@ -118,11 +116,7 @@ public class UsuarioPostgresDAO implements UsuarioDAO {
 
 		// Usuário de retorno
 		Usuario retorno = null;
-
-		// Pega a conexão
-		Connection conexao = ConnectionFactory
-				.getPostgresConnection();
-
+		
 		String sql = "select * from usuario where login = ?";
 		try (PreparedStatement ps = conexao.prepareStatement(sql)) {
 

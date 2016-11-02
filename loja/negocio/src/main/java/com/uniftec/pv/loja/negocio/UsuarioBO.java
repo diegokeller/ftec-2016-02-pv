@@ -1,8 +1,11 @@
 package com.uniftec.pv.loja.negocio;
 
 import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 import com.uniftec.pv.loja.modelo.Usuario;
+import com.uniftec.pv.loja.persistencia.ConnectionFactory;
 import com.uniftec.pv.loja.persistencia.DAOFactory;
 import com.uniftec.pv.loja.persistencia.PersistenceException;
 
@@ -28,10 +31,16 @@ public class UsuarioBO {
 		Validacoes.obrigatorio(login, "Login");
 		Validacoes.obrigatorio(senha, "Senha");
 
+		// Pega a conexão
+		Connection conexao = null;
+
 		// Busca usuário por login
 		try {
+
+			conexao = ConnectionFactory.getConnection();
+
 			Usuario usuario = DAOFactory.getDAOFactory()
-					.getUsuarioDAO().buscarPorLogin(login);
+					.getUsuarioDAO(conexao).buscarPorLogin(login);
 
 			// Achou o usuário?
 			if (usuario == null) {
@@ -53,11 +62,26 @@ public class UsuarioBO {
 						"A senha informada está incorreta.");
 			}
 
-		} catch (PersistenceException e) {
-			throw new BusinessException("Erro ao buscar o usuário", e);
-		} catch (NoSuchAlgorithmException e) {
-			throw new BusinessException("Erro ao criptografar a senha",
-					e);
+			// Confirma a transação
+			conexao.commit();
+
+		} catch (Exception e) {
+			if (conexao != null) {
+				try {
+					conexao.rollback();
+				} catch (SQLException e1) {
+					e.printStackTrace();
+				}
+			}
+			throw new BusinessException("", e);
+		} finally {
+			if (conexao != null) {
+				try {
+					conexao.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 

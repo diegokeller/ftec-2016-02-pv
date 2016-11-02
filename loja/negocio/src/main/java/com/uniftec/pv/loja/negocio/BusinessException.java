@@ -6,7 +6,7 @@ package com.uniftec.pv.loja.negocio;
 public class BusinessException extends Exception {
 
 	public BusinessException(String message, Throwable cause) {
-		super(message, cause);
+		super(message + (": " + cause != null ? cause.getMessage() : ""), cause);
 	}
 
 	public BusinessException(String message) {

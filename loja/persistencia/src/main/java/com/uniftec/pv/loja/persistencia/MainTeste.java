@@ -1,5 +1,6 @@
 package com.uniftec.pv.loja.persistencia;
 
+import java.sql.Connection;
 import java.util.List;
 
 import com.uniftec.pv.loja.modelo.Usuario;
@@ -10,14 +11,16 @@ public class MainTeste {
 
 		try {
 
+			Connection connection = ConnectionFactory.getConnection();
+			
 			// Testa a inclusão
-			DAOFactory.getDAOFactory().getUsuarioDAO()
+			DAOFactory.getDAOFactory().getUsuarioDAO(connection)
 					.inserir(new Usuario(null, "TESTE 25/10", "teste",
 							"teste@email.com", "teste", true, "Cliente"));
 
 			// Testa buscar todos
 			List<Usuario> todos = DAOFactory.getDAOFactory()
-					.getUsuarioDAO().buscarTodos();
+					.getUsuarioDAO(connection).buscarTodos();
 			todos.forEach(usuario -> {
 				System.out.println(usuario);
 			});

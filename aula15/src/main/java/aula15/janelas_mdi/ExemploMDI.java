@@ -24,8 +24,10 @@ public class ExemploMDI extends JFrame {
 		for (LookAndFeelInfo laf : instalados) {
 			System.out.println(laf);
 		}
+		
+		// Trocar o look and feel
 		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (ClassNotFoundException | InstantiationException
 				| IllegalAccessException
 				| UnsupportedLookAndFeelException e1) {

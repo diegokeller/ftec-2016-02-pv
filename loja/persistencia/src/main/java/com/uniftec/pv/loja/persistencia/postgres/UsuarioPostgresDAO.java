@@ -51,7 +51,34 @@ public class UsuarioPostgresDAO implements UsuarioDAO {
 	}
 
 	@Override
-	public void atualizar(Usuario usuario) {
+	public void atualizar(Usuario usuario) throws PersistenceException {
+		
+	// Monta o comandos SQL
+			String sql = "update usuario "
+					+ "	set nome = ?, login = ?, email = ?, " 
+					+ " senha = ?, ativo = ?, perfil = ? "
+					+ " where id = ?";
+
+			// Try with resources - PS será automaticamente fechado
+			try (PreparedStatement ps = conexao.prepareStatement(sql)) {
+
+				// Passar os parâmetros
+				ps.setString(1, usuario.getNome());
+				ps.setString(2, usuario.getLogin());
+				ps.setString(3, usuario.getEmail());
+				ps.setString(4, usuario.getSenha());
+				ps.setBoolean(5, usuario.getAtivo());
+				ps.setString(6, usuario.getPerfil());
+				ps.setInt(7, usuario.getId());
+
+				// Executa
+				ps.execute();
+
+			} catch (SQLException e) {
+				throw new PersistenceException(
+						"Erro ao atualizar o usuário.", e);
+			}
+			
 	}
 
 	@Override

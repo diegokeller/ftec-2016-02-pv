@@ -1,4 +1,4 @@
-package com.uniftec.pv.loja.negocio;
+package com.uniftec.pv.loja.testes;
 
 import java.awt.FlowLayout;
 import java.security.NoSuchAlgorithmException;
@@ -8,6 +8,9 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
+import com.uniftec.pv.loja.negocio.BusinessException;
+import com.uniftec.pv.loja.negocio.UsuarioBO;
 
 public class MainTesteLogin extends JFrame {
 
